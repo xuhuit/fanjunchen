@@ -1,27 +1,65 @@
 <!DOCTYPE html>
-<html lang="en-US">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>Image gallery</title>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sequence Animation</title>
+<style>
+  body, html {
+    height: 100%;
+    margin: 0;
+  }
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  .animation-container {
+    display: flex;
+  }
+  .animation-item {
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+    background-color: #3498db;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="animation-container">
+    <div class="animation-item" id="item1"></div>
+    <div class="animation-item" id="item2"></div>
+    <div class="animation-item" id="item3"></div>
+  </div>
+</div>
+<script>
+  const items = document.querySelectorAll('.animation-item');
 
-    <link rel="stylesheet" href="styles.css">
-    
-  </head>
+  function animateItem(item, index) {
+    return new Promise((resolve) => {
+      const timing = {
+        duration: 2000,
+        iterations: 1,
+        fill: 'forwards',
+      };
+      const keyframes = [
+        { transform: 'rotate(0deg) scale(1)' },
+        { transform: 'rotate(360deg) scale(0)' },
+      ];
 
-  <body>
-    <h1>Image gallery example</h1>
+      item.animate(keyframes, timing).onfinish = () => {
+        resolve();
+      };
+    });
+  }
 
-    <div class="full-img">
-      <img class="displayed-img" src="1.jpg" alt="Closeup of a human eye">
-      <div class="overlay"></div>
-      <button class="dark">Darken</button>
-    </div>
-
-    <div class="thumb-bar">
-
-
-    </div>
-    <script src="main.js"></script>
-  </body>
+  (async function() {
+    for (let i = 0; i < items.length; i++) {
+      await animateItem(items[i], i);
+    }
+  })();
+</script>
+</body>
 </html>
